@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard - CashStash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <!-- CASHSTASH STYLES -->
+  <style>
+    :root {
+      --cs-green: #74C2A8;
+      --cs-green-soft: rgba(116, 194, 168, 0.1);
+      --cs-bg: #F5F7F6;
+      --cs-text-main: #1F2933;
+      --cs-text-muted: #6C757D;
+      --cs-radius-lg: 16px;
+      --cs-shadow-main: 0 4px 16px rgba(15, 35, 52, 0.08);
+    }
+
+    body {
+      background-color: var(--cs-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 16px;
+      color: var(--cs-text-main);
+    }
+
+    .page-title { font-size: 24px; font-weight: 600; }
+    .text-muted-small { color: var(--cs-text-muted); font-size: 0.9rem; }
+
+    .cs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cs-text-muted);
+    }
+
+    .navbar-cs {
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(15, 35, 52, 0.06);
+    }
+
+    .navbar-cs .nav-link {
+      font-size: 0.9rem;
+      color: var(--cs-text-muted);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.4rem;
+    }
+    .navbar-cs .nav-link.active {
+      color: var(--cs-green);
+      font-weight: 600;
+      border-bottom-color: var(--cs-green);
+    }
+
+    .cs-shell {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .cs-card {
+      border-radius: var(--cs-radius-lg);
+      border: 1px solid rgba(15, 35, 52, 0.03);
+      box-shadow: var(--cs-shadow-main);
+    }
+
+    .cs-card-body {
+      padding: 24px;
+    }
+
+    /* equal height cards in the chart/bills row */
+    .cs-equal-row-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .cs-equal-row-card .cs-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* progress bar styling */
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background-color: #E5E7EB;
+      overflow: hidden;
+    }
+    .progress-bar {
+      background-color: var(--cs-green);
+      transition: width .8s ease-out;
+    }
+
+    /* chart */
+    .cs-chart-wrapper {
+      margin-top: 8px;
+      margin-bottom: 8px;
+      flex: 1; /* so it grows but stays inside equal height */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cs-chart-canvas {
+      max-height: 140px;  /* smaller chart */
+      width: 100%;
+    }
+
+    .cs-chip {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      background-color: var(--cs-green-soft);
+      color: var(--cs-green);
+      border: none;
+    }
+
+    .cs-icon-pill {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--cs-green-soft);
+      color: var(--cs-green);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-cs">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="dashboard.html">CashStash</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbars">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="transactions.html">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+        <li class="nav-item"><a class="nav-link" href="goals.html">Goals</a></li>
+        <li class="nav-item"><a class="nav-link" href="insights.html">Insights</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="container cs-shell">
+
+  <!-- Welcome -->
+  <div class="mb-4">
+    <h1 class="page-title mb-1">Welcome back, Jun</h1>
+    <p class="text-muted-small mb-0">Here’s your financial overview for November.</p>
+  </div>
+
+  <!-- Top row -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-8">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-baseline mb-2">
+            <span class="cs-label">Money Left to Spend</span>
+            <span class="text-muted-small">Budget: $800.00</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="fw-semibold" style="font-size:1.4rem;">$267.20</span>
+            <span class="text-muted-small">remaining this month</span>
+          </div>
+          <div class="progress mb-2">
+            <div class="progress-bar" style="width:65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <small class="text-muted-small">Getting close to your limit. Watch your spending.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card cs-card text-center">
+        <div class="cs-card-body">
+          <p class="cs-label mb-2">Tracking Streak</p>
+          <div class="fw-semibold" style="font-size:2rem; color:var(--cs-green);">7</div>
+          <small class="text-muted-small">
+            days of tracking your spending<br>
+            Small steps add up over time.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spending + Upcoming Bills (equal height) -->
+  <div class="row g-4 mb-4 align-items-stretch">
+
+    <!-- Spending by Category -->
+    <div class="col-lg-7">
+      <div class="card cs-card cs-equal-row-card">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="mb-0">Spending by Category</h5>
+            <span class="cs-chip">This month</span>
+          </div>
+          <p class="text-muted-small mb-2">See how your spending breaks down across key categories.</p>
+
+          <div class="cs-chart-wrapper">
+            <canvas id="spendingChart" class="cs-chart-canvas"></canvas>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-2">
+            <span class="badge bg-light text-dark">Housing</span>
+            <span class="badge bg-light text-dark">Education</span>
+            <span class="badge bg-light text-dark">Eating Out</span>
+            <span class="badge bg-light text-dark">Food &amp; Groceries</span>
+            <span class="badge bg-light text-dark">Transportation</span>
+            <span class="badge bg-light text-dark">Shopping</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Bills -->
+    <div class="col-lg-5">
+      <div class="card cs-card cs-equal-row-card">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="mb-0">Upcoming Bills</h5>
+            <span class="cs-chip">Next 30 days</span>
+          </div>
+          <p class="text-muted-small mb-2">Stay ahead of what’s due so you’re never surprised.</p>
+
+          <!-- Bills list -->
+          <div class="d-flex justify-content-between py-2 border-bottom">
+            <div>
+              <div>Rent</div>
+              <small class="text-muted-small">Nov 30 • Housing</small>
+            </div>
+            <div class="fw-bold">$650.00</div>
+          </div>
+
+          <div class="d-flex justify-content-between py-2 border-bottom">
+            <div>
+              <div>Phone Bill</div>
+              <small class="text-muted-small">Nov 14 • Subscriptions</small>
+            </div>
+            <div class="fw-bold">$45.00</div>
+          </div>
+
+          <div class="d-flex justify-content-between py-2 border-bottom">
+            <div>
+              <div>Internet</div>
+              <small class="text-muted-small">Nov 19 • Utilities</small>
+            </div>
+            <div class="fw-bold">$35.00</div>
+          </div>
+
+          <div class="d-flex justify-content-between py-2 border-bottom">
+            <div>
+              <div>Gym Membership</div>
+              <small class="text-muted-small">Nov 21 • Health</small>
+            </div>
+            <div class="fw-bold">$29.99</div>
+          </div>
+
+          <div class="d-flex justify-content-between py-2">
+            <div>
+              <div>Cloud Storage</div>
+              <small class="text-muted-small">Nov 23 • Productivity</small>
+            </div>
+            <div class="fw-bold">$2.99</div>
+          </div>
+
+          <!-- Summary to fill height + add value -->
+          <hr>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted-small">Total due this month</span>
+            <span class="fw-semibold">$762. -</span>
+          </div>
+          <small class="text-muted-small">
+            Tip: Setting aside just a bit each week for bills can help keep your “Money Left to Spend” number predictable.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Goal button -->
+  <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#goalModal">
+    Add New Goal
+  </button>
+
+  <!-- Goals -->
+  <div id="goalsContainer" class="row g-4 mb-4">
+    <div class="col-lg-4">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">Emergency Fund</small>
+          <div class="d-flex justify-content-between mb-1">
+            <small>$420</small>
+            <small class="text-muted-small">$1000</small>
+          </div>
+          <div class="progress mb-1">
+            <div class="progress-bar" style="width:42%;"></div>
+          </div>
+          <small class="text-muted-small">42% complete</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">Study Abroad Trip</small>
+          <div class="d-flex justify-content-between mb-1">
+            <small>$680</small>
+            <small class="text-muted-small">$2500</small>
+          </div>
+          <div class="progress mb-1">
+            <div class="progress-bar" style="width:27%;"></div>
+          </div>
+          <small class="text-muted-small">27% complete</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">New Laptop</small>
+          <div class="d-flex justify-content-between mb-1">
+            <small>$350</small>
+            <small class="text-muted-small">$1200</small>
+          </div>
+          <div class="progress mb-1">
+            <div class="progress-bar" style="width:29%;"></div>
+          </div>
+          <small class="text-muted-small">29% complete</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learn & Grow -->
+  <div class="card cs-card mb-4">
+    <div class="cs-card-body">
+      <div class="d-flex align-items-center mb-3">
+        <div class="cs-icon-pill me-3">📚</div>
+        <div>
+          <div class="fw-semibold">Learn &amp; Grow This Week</div>
+          <small class="text-muted-small">Quick lessons to build your financial confidence</small>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div>The Power of Compound Interest</div>
+          <small class="text-muted-small">Learn how your money can grow over time.</small>
+        </div>
+        <span class="badge bg-light text-muted-small">45 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tip -->
+  <div class="card cs-card">
+    <div class="cs-card-body d-flex">
+      <div class="cs-icon-pill me-3">💡</div>
+      <div>
+        <small class="text-muted-small d-block mb-1">Today’s Financial Tip</small>
+        <small class="text-muted-small">Use student discounts — many services offer 50% off for students.</small>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Goal Modal -->
+<div class="modal fade" id="goalModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Goal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">Goal Name</label>
+        <input id="goalName" type="text" class="form-control">
+        <label class="form-label mt-3">Current Amount</label>
+        <input id="goalCurrent" type="number" min="0" class="form-control">
+        <label class="form-label mt-3">Target Amount</label>
+        <input id="goalTarget" type="number" min="0" class="form-control">
+        <small class="text-muted-small d-block mt-1">Tip: Start small so you can hit your first goal quickly.</small>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="saveGoalBtn" class="btn btn-success">Save Goal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+  // pie chart (placeholder data)
+  const ctx = document.getElementById('spendingChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Housing', 'Food', 'Education', 'Entertainment', 'Shopping'],
+        datasets: [{
+          data: [650, 260, 120, 80, 60],
+          backgroundColor: [
+            '#74C2A8',
+            'rgba(116,194,168,0.7)',
+            '#A9E3CF',
+            '#D1F2E5',
+            '#E5E7EB'
+          ]
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 12 } }
+          }
+        }
+      }
+    });
+  }
+
+  // Add new goal from modal
+  document.getElementById('saveGoalBtn').addEventListener('click', function () {
+    const nameInput = document.getElementById('goalName');
+    const currentInput = document.getElementById('goalCurrent');
+    const targetInput = document.getElementById('goalTarget');
+
+    const name = nameInput.value.trim();
+    const current = parseFloat(currentInput.value);
+    const target = parseFloat(targetInput.value);
+
+    if (!name || isNaN(current) || isNaN(target) || target <= 0) {
+      alert('Please enter a goal name and valid amounts.');
+      return;
+    }
+
+    const percent = Math.min(100, (current / target) * 100);
+    const percentRounded = Math.round(percent);
+
+    const col = document.createElement('div');
+    col.className = 'col-lg-4';
+    col.innerHTML = `
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">${name}</small>
+          <div class="d-flex justify-content-between mb-1">
+            <small>$${current.toFixed(2)}</small>
+            <small class="text-muted-small">$${target.toFixed(2)}</small>
+          </div>
+          <div class="progress mb-1">
+            <div class="progress-bar" style="width:${percentRounded}%;"></div>
+          </div>
+          <small class="text-muted-small">${percentRounded}% complete</small>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('goalsContainer').appendChild(col);
+
+    // reset + close
+    nameInput.value = '';
+    currentInput.value = '';
+    targetInput.value = '';
+    const modalEl = document.getElementById('goalModal');
+    bootstrap.Modal.getInstance(modalEl).hide();
+  });
+</script>
+
+</body>
+</html>

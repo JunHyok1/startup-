@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Budget - CashStash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <!-- CashStash Design System -->
+  <style>
+    :root {
+      --cs-green: #74C2A8;
+      --cs-green-soft: rgba(116, 194, 168, 0.1);
+      --cs-bg: #F5F7F6;
+      --cs-text-main: #1F2933;
+      --cs-text-muted: #6C757D;
+      --cs-radius-lg: 16px;
+      --cs-shadow-main: 0 4px 16px rgba(15, 35, 52, 0.08);
+    }
+
+    body {
+      background-color: var(--cs-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 16px;
+      color: var(--cs-text-main);
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .text-muted-small {
+      color: var(--cs-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .cs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cs-text-muted);
+    }
+
+    /* NAVBAR */
+    .navbar-cs {
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(15, 35, 52, 0.06);
+    }
+
+    .navbar-cs .nav-link {
+      font-size: 0.9rem;
+      color: var(--cs-text-muted);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.4rem;
+    }
+
+    .navbar-cs .nav-link.active {
+      color: var(--cs-green);
+      font-weight: 600;
+      border-bottom-color: var(--cs-green);
+    }
+
+    /* LAYOUT & CARDS */
+    .cs-shell {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .cs-card {
+      border-radius: var(--cs-radius-lg);
+      border: 1px solid rgba(15, 35, 52, 0.03);
+      box-shadow: var(--cs-shadow-main);
+      background-color: #ffffff;
+    }
+
+    .cs-card-body {
+      padding: 24px;
+    }
+
+    .budget-video {
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    /* Progress styling */
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background-color: #E5E7EB;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background-color: var(--cs-green);
+      transition: width 0.8s ease-out;
+    }
+
+    /* Method tiles */
+    .cs-method-tile {
+      border-radius: 12px;
+      border: 1px solid #E5E7EB;
+      padding: 16px;
+      height: 100%;
+      background-color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cs-method-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cs-method-tile.active {
+      border-color: var(--cs-green);
+      background-color: var(--cs-green-soft);
+      box-shadow: 0 0 0 1px rgba(116, 194, 168, 0.3);
+    }
+
+    .cs-summary-card h5 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-cs">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="dashboard.html">CashStash</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbars">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="transactions.html">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link active" href="budget.html">Budget</a></li>
+        <li class="nav-item"><a class="nav-link" href="goals.html">Goals</a></li>
+        <li class="nav-item"><a class="nav-link" href="insights.html">Insights</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="container cs-shell">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 class="page-title mb-1">Budget Planner</h1>
+    <p class="text-muted-small mb-0">Plan your money before you spend it.</p>
+  </div>
+
+  <!-- Learn Budgeting Methods -->
+  <div class="card cs-card mb-4">
+    <div class="cs-card-body">
+      <div class="d-flex justify-content-between align-items-baseline mb-2">
+        <h5 class="mb-0">Learn Budgeting Methods</h5>
+        <span class="cs-label">Start here</span>
+      </div>
+      <p class="text-muted-small mb-3">Short videos to help you choose a budgeting style that fits your life.</p>
+
+      <div class="border rounded p-3 mb-3 bg-white">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-7">
+            <div class="d-flex justify-content-between mb-1">
+              <div><strong>The 50/30/20 Rule</strong> <small class="text-muted-small">· 7 min</small></div>
+            </div>
+            <small class="text-muted-small">
+              A simple framework: 50% needs, 30% wants, 20% savings.
+            </small>
+          </div>
+          <div class="col-md-5">
+            <div class="ratio ratio-16x9 budget-video">
+              <iframe src="https://www.youtube.com/embed/HQzoZfc3GwQ?si=yCD8CAK8TvXGxLRx" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border rounded p-3 mb-3 bg-white">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-7">
+            <div class="d-flex justify-content-between mb-1">
+              <div><strong>Envelope Method Explained</strong> <small class="text-muted-small">· 3.5 min</small></div>
+            </div>
+            <small class="text-muted-small">
+              Allocate cash to specific categories so you know when to stop spending.
+            </small>
+          </div>
+          <div class="col-md-5">
+            <div class="ratio ratio-16x9 budget-video">
+              <iframe src="https://www.youtube.com/embed/Am-GDjCp1HM?si=qas4-V4E7T9HibMS" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border rounded p-3 bg-white">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-7">
+            <div class="d-flex justify-content-between mb-1">
+              <div><strong>Zero-Based Budgeting</strong> <small class="text-muted-small">· 2 min</small></div>
+            </div>
+            <small class="text-muted-small">
+              Give every dollar a job until you reach zero.
+            </small>
+          </div>
+          <div class="col-md-5">
+            <div class="ratio ratio-16x9 budget-video">
+              <iframe src="https://www.youtube.com/embed/PvErAzTOwk4?si=V_QuIFumwxcLySZn" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Methods Row -->
+  <div class="card cs-card mb-4">
+    <div class="cs-card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="cs-label">Choose Your Budgeting Style</span>
+        <span class="text-muted-small">Tap a method to preview how your budget would look.</span>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="cs-method-tile js-method-tile active" data-method="simple">
+            <div class="cs-method-title">Simple Budget</div>
+            <small class="text-muted-small">
+              Set monthly limits for each category and track against them.
+            </small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="cs-method-tile js-method-tile" data-method="envelope">
+            <div class="cs-method-title">Envelope Method</div>
+            <small class="text-muted-small">
+              Split money into “envelopes” for cash-like control over your spending.
+            </small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="cs-method-tile js-method-tile" data-method="zero">
+            <div class="cs-method-title">Zero-Based</div>
+            <small class="text-muted-small">
+              Assign every dollar to a job until nothing is left unplanned.
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Totals Row -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card cs-card cs-summary-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">Total Budget</small>
+          <h5 id="totalBudgetText">$1600.00</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card cs-card cs-summary-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">Total Spent</small>
+          <h5 id="totalSpentText">$1173.34</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card cs-card cs-summary-card">
+        <div class="cs-card-body">
+          <small class="text-muted-small d-block mb-1">Remaining</small>
+          <h5 id="remainingText" class="text-success">$426.66</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Budget Categories -->
+  <div class="card cs-card">
+    <div class="cs-card-body">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <h5 class="mb-0">Budget Categories</h5>
+        <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#categoryModal">
+          Add Category
+        </button>
+      </div>
+      <div class="cs-label mb-1" id="currentMethodLabel">Simple Budget</div>
+      <p class="text-muted-small mb-3" id="currentMethodDesc">
+        You set simple monthly limits for each category and check in once a week.
+      </p>
+
+      <div id="categoryContainer">
+        <!-- Filled dynamically by JS based on selected method -->
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="form-label">Category Name</label>
+        <input id="catName" type="text" class="form-control">
+
+        <label class="form-label mt-3">Spent Amount</label>
+        <input id="catSpent" type="number" class="form-control" min="0" step="0.01">
+
+        <label class="form-label mt-3">Budget Amount</label>
+        <input id="catBudget" type="number" class="form-control" min="0" step="0.01">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="saveCategoryBtn" class="btn btn-success" data-bs-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+  // Predefined data for each budgeting method
+  const methodConfigs = {
+    simple: {
+      label: "Simple Budget",
+      desc: "You set simple monthly limits for each category and check in once a week.",
+      totals: {
+        budget: 1600,
+        spent: 1173.34
+      },
+      categoriesHtml: `
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Housing</small>
+            <small class="text-danger">$0.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$680.00 of $680.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar bg-danger" style="width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Food &amp; Groceries</small>
+            <small class="text-success">$112.50 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$187.50 of $300.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:63%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Transportation</small>
+            <small class="text-success">$60.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$40.00 of $100.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:40%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Fun &amp; Entertainment</small>
+            <small class="text-success">$90.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$60.00 of $150.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:40%;"></div>
+          </div>
+        </div>
+      `
+    },
+    envelope: {
+      label: "Envelope Method",
+      desc: "You treat each category like a physical envelope. When it's empty, you pause spending.",
+      totals: {
+        budget: 1200,
+        spent: 780.00
+      },
+      categoriesHtml: `
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Groceries Envelope</small>
+            <small class="text-success">$40.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$160.00 of $200.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:80%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Eating Out Envelope</small>
+            <small class="text-danger">$0.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$120.00 of $120.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar bg-danger" style="width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Coffee &amp; Snacks</small>
+            <small class="text-success">$15.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$35.00 of $50.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:70%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Fun Cash Envelope</small>
+            <small class="text-success">$85.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$65.00 of $150.00 spent</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:43%;"></div>
+          </div>
+        </div>
+      `
+    },
+    zero: {
+      label: "Zero-Based",
+      desc: "Every dollar is assigned to needs, wants, savings, or debt until you reach zero unassigned.",
+      totals: {
+        budget: 1800,
+        spent: 1800
+      },
+      categoriesHtml: `
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Needs (Rent, Bills, Food)</small>
+            <small class="text-danger">$0.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$1200.00 of $1200.00 used</small>
+          <div class="progress">
+            <div class="progress-bar bg-danger" style="width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Wants (Fun &amp; Extras)</small>
+            <small class="text-success">$20.00 left</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$280.00 of $300.00 used</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:93%;"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small>Savings &amp; Debt Payoff</small>
+            <small class="text-success">$0.00 left (fully assigned)</small>
+          </div>
+          <small class="text-muted-small d-block mb-1">$300.00 of $300.00 assigned</small>
+          <div class="progress">
+            <div class="progress-bar" style="width:100%;"></div>
+          </div>
+        </div>
+      `
+    }
+  };
+
+  const methodTiles = document.querySelectorAll('.js-method-tile');
+  const currentMethodLabel = document.getElementById('currentMethodLabel');
+  const currentMethodDesc = document.getElementById('currentMethodDesc');
+  const categoryContainer = document.getElementById('categoryContainer');
+
+  const totalBudgetText = document.getElementById('totalBudgetText');
+  const totalSpentText = document.getElementById('totalSpentText');
+  const remainingText = document.getElementById('remainingText');
+
+  function formatMoney(value) {
+    return '$' + value.toFixed(2);
+  }
+
+  function applyMethod(methodKey) {
+    const cfg = methodConfigs[methodKey];
+    if (!cfg) return;
+
+    // update tiles active state
+    methodTiles.forEach(tile => {
+      tile.classList.toggle('active', tile.dataset.method === methodKey);
+    });
+
+    // update labels + description
+    currentMethodLabel.textContent = cfg.label;
+    currentMethodDesc.textContent = cfg.desc;
+
+    // update totals
+    const budget = cfg.totals.budget;
+    const spent = cfg.totals.spent;
+    const remaining = budget - spent;
+
+    totalBudgetText.textContent = formatMoney(budget);
+    totalSpentText.textContent = formatMoney(spent);
+    remainingText.textContent = formatMoney(remaining);
+
+    remainingText.classList.toggle('text-success', remaining >= 0);
+    remainingText.classList.toggle('text-danger', remaining < 0);
+
+    // update categories
+    categoryContainer.innerHTML = cfg.categoriesHtml;
+  }
+
+  // init with simple method
+  applyMethod('simple');
+
+  // tile click handlers
+  methodTiles.forEach(tile => {
+    tile.addEventListener('click', () => {
+      const methodKey = tile.dataset.method;
+      applyMethod(methodKey);
+    });
+  });
+
+  // Add Category button (appends on top of current method categories)
+  document.getElementById("saveCategoryBtn").onclick = function () {
+    const nameInput = document.getElementById("catName");
+    const spentInput = document.getElementById("catSpent");
+    const budgetInput = document.getElementById("catBudget");
+
+    const name = nameInput.value.trim();
+    const spent = parseFloat(spentInput.value);
+    const budget = parseFloat(budgetInput.value);
+
+    if (!name || isNaN(spent) || isNaN(budget) || budget <= 0) {
+      alert("Please enter a category name and valid amounts.");
+      return;
+    }
+
+    const left = budget - spent;
+    const percent = Math.min(100, (spent / budget) * 100);
+    const percentRounded = Math.round(percent);
+
+    const leftClass = left <= 0 ? "text-danger" : "text-success";
+    const leftLabel = left <= 0 ? "$0.00 left" : `$${left.toFixed(2)} left`;
+
+    const newCategory = document.createElement("div");
+    newCategory.className = "mb-3";
+    newCategory.innerHTML = `
+      <div class="d-flex justify-content-between mb-1">
+        <small>${name}</small>
+        <small class="${leftClass}">${leftLabel}</small>
+      </div>
+      <small class="text-muted-small d-block mb-1">$${spent.toFixed(2)} of $${budget.toFixed(2)} spent</small>
+      <div class="progress">
+        <div class="progress-bar ${left <= 0 ? 'bg-danger' : ''}" style="width:${percentRounded}%;"></div>
+      </div>
+    `;
+
+    categoryContainer.appendChild(newCategory);
+
+    // reset fields
+    nameInput.value = '';
+    spentInput.value = '';
+    budgetInput.value = '';
+  };
+</script>
+
+</body>
+</html>

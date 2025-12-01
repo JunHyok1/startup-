@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Goals &amp; Subscriptions - CashStash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <!-- CashStash Design System -->
+  <style>
+    :root {
+      --cs-green: #74C2A8;
+      --cs-green-soft: rgba(116, 194, 168, 0.1);
+      --cs-bg: #F5F7F6;
+      --cs-text-main: #1F2933;
+      --cs-text-muted: #6C757D;
+      --cs-radius-lg: 16px;
+      --cs-shadow-main: 0 4px 16px rgba(15, 35, 52, 0.08);
+    }
+
+    body {
+      background-color: var(--cs-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 16px;
+      color: var(--cs-text-main);
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .text-muted-small {
+      color: var(--cs-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .cs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cs-text-muted);
+    }
+
+    /* NAVBAR */
+    .navbar-cs {
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(15, 35, 52, 0.06);
+    }
+
+    .navbar-cs .nav-link {
+      font-size: 0.9rem;
+      color: var(--cs-text-muted);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.4rem;
+    }
+
+    .navbar-cs .nav-link.active {
+      color: var(--cs-green);
+      font-weight: 600;
+      border-bottom-color: var(--cs-green);
+    }
+
+    /* LAYOUT & CARDS */
+    .cs-shell {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .cs-card {
+      border-radius: var(--cs-radius-lg);
+      border: 1px solid rgba(15, 35, 52, 0.03);
+      box-shadow: var(--cs-shadow-main);
+      background-color: #ffffff;
+    }
+
+    .cs-card-body {
+      padding: 24px;
+    }
+
+    /* Progress styling */
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background-color: #E5E7EB;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background-color: var(--cs-green);
+      transition: width 0.8s ease-out;
+    }
+
+    .cs-icon-pill {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--cs-green-soft);
+      color: var(--cs-green);
+      font-size: 16px;
+    }
+
+    /* New: hero illustration + service logos */
+    .cs-hero-illustration {
+      max-width: 160px;
+      width: 100%;
+      display: block;
+      margin-left: auto;
+    }
+
+    .cs-service-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 10px;
+      background-color: #E5E7EB; /* placeholder grey block behind the # source */
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-cs">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="dashboard.html">CashStash</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbars">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="transactions.html">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+        <li class="nav-item"><a class="nav-link active" href="goals.html">Goals</a></li>
+        <li class="nav-item"><a class="nav-link" href="insights.html">Insights</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="container cs-shell">
+
+  <!-- Header with Illustration -->
+  <div class="row align-items-center mb-4">
+    <div class="col-md-8">
+      <h1 class="page-title mb-1">Goals &amp; Subscriptions</h1>
+      <p class="text-muted-small mb-0">
+        Understand priorities and make intentional trade-offs between saving for what matters and what you pay for every month.
+      </p>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <!-- Goals Column -->
+    <div class="col-lg-6">
+      <div class="card cs-card h-100">
+        <div class="cs-card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div class="cs-icon-pill me-3">🎯</div>
+            <div>
+              <h5 class="mb-0">Your Goals</h5>
+              <small class="text-muted-small">Set targets and track your progress over time.</small>
+            </div>
+          </div>
+
+          <!-- Goal 1 -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <strong>Emergency Fund</strong>
+              <small class="text-muted-small">$420 / $1000</small>
+            </div>
+            <div class="progress mb-1">
+              <div class="progress-bar" style="width:42%;"></div>
+            </div>
+            <small class="text-muted-small d-block mb-1">42% complete · Target: Feb 2026</small>
+            <button class="btn btn-sm btn-outline-success mb-1">
+              Contribute $50/month · Est. 12 months remaining
+            </button>
+            <small class="text-muted-small d-block">
+              You’re getting closer — steady progress matters more than speed.
+            </small>
+          </div>
+
+          <!-- Goal 2 -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <strong>Study Abroad Trip</strong>
+              <small class="text-muted-small">$680 / $2500</small>
+            </div>
+            <div class="progress mb-1">
+              <div class="progress-bar" style="width:27%;"></div>
+            </div>
+            <small class="text-muted-small d-block mb-1">27% complete · Target: Jun 2026</small>
+            <button class="btn btn-sm btn-outline-success mb-1">
+              Contribute $150/month · Est. 13 months remaining
+            </button>
+            <small class="text-muted-small d-block">
+              You’re getting closer — steady progress matters more than speed.
+            </small>
+          </div>
+
+          <!-- Goal 3 -->
+          <div class="mb-0">
+            <div class="d-flex justify-content-between">
+              <strong>New Laptop</strong>
+              <small class="text-muted-small">$350 / $1200</small>
+            </div>
+            <div class="progress mb-1">
+              <div class="progress-bar" style="width:29%;"></div>
+            </div>
+            <small class="text-muted-small d-block mb-1">29% complete · Target: Jan 2026</small>
+            <button class="btn btn-sm btn-outline-success mb-1">
+              Contribute $100/month · Est. 9 months remaining
+            </button>
+            <small class="text-muted-small d-block">
+              You’re getting closer — steady progress matters more than speed.
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscriptions Column -->
+    <div class="col-lg-6">
+      <div class="card cs-card h-100">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <div class="cs-icon-pill me-3">📺</div>
+              <div>
+                <h5 class="mb-0">Active Subscriptions</h5>
+                <small class="text-muted-small">See where your recurring money is going.</small>
+              </div>
+            </div>
+            <small class="text-muted-small">
+              Total Monthly <strong>$59.46</strong>
+            </small>
+          </div>
+
+          <!-- Subscription 1 -->
+          <div class="mb-3 border-bottom pb-2">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <!-- Replace # with the official Spotify logo or a simple green music icon -->
+                <img
+                  src="images/spotify.png"
+                  alt="Spotify logo"
+                  class="cs-service-logo"
+                >
+                <div>
+                  <strong>Spotify Premium</strong><br>
+                  <small class="text-muted-small">Entertainment · Renews Dec 2</small>
+                </div>
+              </div>
+              <div class="text-end">
+                <strong>$10.99/mo</strong><br>
+                <small class="text-success">Pause · Cancel</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription 2 -->
+          <div class="mb-3 border-bottom pb-2">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <!-- Replace # with a Netflix logo or red “N” tile -->
+                <img
+                  src="/images/netflix.png"
+                  alt="Netflix logo"
+                  class="cs-service-logo"
+                >
+                <div>
+                  <strong>Netflix</strong><br>
+                  <small class="text-muted-small">Entertainment · Renews Nov 24</small>
+                </div>
+              </div>
+              <div class="text-end">
+                <strong>$15.49/mo</strong><br>
+                <small class="text-success">Pause · Cancel</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription 3 -->
+          <div class="mb-3 border-bottom pb-2">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <!-- Replace # with a simple gym icon: dumbbell or person exercising -->
+                <img
+                  src="/images/gym.png"
+                  alt="Gym membership icon"
+                  class="cs-service-logo"
+                >
+                <div>
+                  <strong>Gym Membership</strong><br>
+                  <small class="text-muted-small">Health · Renews Nov 30</small>
+                </div>
+              </div>
+              <div class="text-end">
+                <strong>$29.99/mo</strong><br>
+                <small class="text-success">Pause · Cancel</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription 4 -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <!-- Replace # with a cloud storage icon (cloud with arrow/box) -->
+                <img
+                  src="/images/cloud.png"
+                  alt="Cloud storage service icon"
+                  class="cs-service-logo"
+                >
+                <div>
+                  <strong>Cloud Storage</strong><br>
+                  <small class="text-muted-small">Productivity · Renews Nov 17</small>
+                </div>
+              </div>
+              <div class="text-end">
+                <strong>$2.99/mo</strong><br>
+                <small class="text-success">Pause · Cancel</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-top pt-2 mt-2">
+            <small class="text-muted-small">
+              Yearly cost: <strong>$713.52</strong><br>
+              Consider reviewing subscriptions monthly to ensure they still match your priorities.
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trade-off Insight -->
+  <div class="card cs-card">
+    <div class="cs-card-body">
+      <div class="d-flex align-items-center mb-2">
+        <div class="cs-icon-pill me-3">💡</div>
+        <div>
+          <div class="cs-label mb-0">Trade-off Insight</div>
+        </div>
+      </div>
+      <p class="mb-1 text-muted-small">
+        If you cancel Spotify Premium and redirect that money to your Study Abroad Trip goal:
+      </p>
+      <p class="mb-0 text-success">
+        You could reach your goal around <strong>24 days faster</strong> (from ~364 days to ~340 days).
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Transactions - CashStash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <!-- CashStash Design System (same as dashboard) -->
+  <style>
+    :root {
+      --cs-green: #74C2A8;
+      --cs-green-soft: rgba(116, 194, 168, 0.1);
+      --cs-bg: #F5F7F6;
+      --cs-text-main: #1F2933;
+      --cs-text-muted: #6C757D;
+      --cs-radius-lg: 16px;
+      --cs-shadow-main: 0 4px 16px rgba(15, 35, 52, 0.08);
+    }
+
+    body {
+      background-color: var(--cs-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 16px;
+      color: var(--cs-text-main);
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .text-muted-small {
+      color: var(--cs-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .cs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cs-text-muted);
+    }
+
+    /* NAVBAR */
+    .navbar-cs {
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(15, 35, 52, 0.06);
+    }
+
+    .navbar-cs .nav-link {
+      font-size: 0.9rem;
+      color: var(--cs-text-muted);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.4rem;
+    }
+
+    .navbar-cs .nav-link.active {
+      color: var(--cs-green);
+      font-weight: 600;
+      border-bottom-color: var(--cs-green);
+    }
+
+    /* LAYOUT & CARDS */
+    .cs-shell {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .cs-card {
+      border-radius: var(--cs-radius-lg);
+      border: 1px solid rgba(15, 35, 52, 0.03);
+      box-shadow: var(--cs-shadow-main);
+    }
+
+    .cs-card-body {
+      padding: 24px;
+    }
+
+    /* FILTER PILL BUTTONS */
+    .cs-filter-pill {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      border: 1px solid #E5E7EB;
+      background-color: #ffffff;
+      color: var(--cs-text-main);
+      cursor: pointer;
+    }
+
+    .cs-filter-pill.active {
+      background-color: var(--cs-green);
+      color: #ffffff;
+      border-color: var(--cs-green);
+    }
+
+    /* TRANSACTION LINES */
+    .transaction-item {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .transaction-item:not(:last-child) {
+      border-bottom: 1px solid #E5E7EB;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-cs">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="dashboard.html">CashStash</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbars">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="transactions.html">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+        <li class="nav-item"><a class="nav-link" href="goals.html">Goals</a></li>
+        <li class="nav-item"><a class="nav-link" href="insights.html">Insights</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="container cs-shell">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 class="page-title mb-1">Transactions &amp; Accounts</h1>
+    <p class="text-muted-small mb-0">Track where your money goes and build awareness.</p>
+  </div>
+
+  <!-- FILTERS CARD -->
+  <div class="card cs-card mb-4">
+    <div class="cs-card-body">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-5">
+          <input
+            type="text"
+            id="searchTransactions"
+            class="form-control rounded-pill"
+            placeholder="Search transactions..."
+          >
+        </div>
+        <div class="col-md-7 d-flex flex-wrap gap-2 justify-content-md-end">
+          <!-- NOTE: these use simple keys like 'food', 'eating-out' etc. -->
+          <button class="cs-filter-pill active" data-filter="all">All Categories</button>
+          <button class="cs-filter-pill" data-filter="food">Food &amp; Groceries</button>
+          <button class="cs-filter-pill" data-filter="eating-out">Eating Out</button>
+          <button class="cs-filter-pill" data-filter="entertainment">Entertainment</button>
+          <button class="cs-filter-pill" data-filter="shopping">Shopping</button>
+          <button class="cs-filter-pill" data-filter="income">Income</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSACTIONS CARD -->
+  <div class="card cs-card">
+    <div class="cs-card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0">Recent Transactions</h5>
+        <span class="cs-label">Last 30 days</span>
+      </div>
+
+      <!-- IMPORTANT: data-category uses same keys as data-filter -->
+
+      <div class="transaction-item"
+           data-category="food" data-name="Grocery Store">
+        <div>
+          <div>Grocery Store</div>
+          <small class="text-muted-small">Nov 9, 2025 · Food &amp; Groceries</small>
+        </div>
+        <div class="fw-bold">$45.32</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="eating-out" data-name="Coffee Shop">
+        <div>
+          <div>Coffee Shop</div>
+          <small class="text-muted-small">Nov 8, 2025 · Eating Out</small>
+        </div>
+        <div class="fw-bold">$5.50</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="income" data-name="Part-time Job">
+        <div>
+          <div>Part-time Job</div>
+          <small class="text-success text-muted-small">Nov 7, 2025 · Income</small>
+        </div>
+        <div class="fw-bold text-success">+ $420.00</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="education" data-name="Textbook Store">
+        <div>
+          <div>Textbook Store</div>
+          <small class="text-muted-small">Nov 7, 2025 · Education</small>
+        </div>
+        <div class="fw-bold">$87.99</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="entertainment" data-name="Movie Theater">
+        <div>
+          <div>Movie Theater</div>
+          <small class="text-muted-small">Nov 6, 2025 · Entertainment</small>
+        </div>
+        <div class="fw-bold">$15.00</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="transportation" data-name="Gas Station">
+        <div>
+          <div>Gas Station</div>
+          <small class="text-muted-small">Nov 5, 2025 · Transportation</small>
+        </div>
+        <div class="fw-bold">$38.50</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="eating-out" data-name="Restaurant">
+        <div>
+          <div>Restaurant</div>
+          <small class="text-muted-small">Nov 4, 2025 · Eating Out</small>
+        </div>
+        <div class="fw-bold">$28.75</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="shopping" data-name="Online Shopping">
+        <div>
+          <div>Online Shopping</div>
+          <small class="text-muted-small">Nov 3, 2025 · Shopping</small>
+        </div>
+        <div class="fw-bold">$52.30</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="subscriptions" data-name="Spotify">
+        <div>
+          <div>Spotify</div>
+          <small class="text-muted-small">Nov 2, 2025 · Subscriptions</small>
+        </div>
+        <div class="fw-bold">$10.99</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="food" data-name="Grocery Store">
+        <div>
+          <div>Grocery Store</div>
+          <small class="text-muted-small">Nov 1, 2025 · Food &amp; Groceries</small>
+        </div>
+        <div class="fw-bold">$62.18</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="housing" data-name="Rent Payment">
+        <div>
+          <div>Rent Payment</div>
+          <small class="text-muted-small">Oct 31, 2025 · Housing</small>
+        </div>
+        <div class="fw-bold">$650.00</div>
+      </div>
+
+      <div class="transaction-item"
+           data-category="eating-out" data-name="Coffee Shop">
+        <div>
+          <div>Coffee Shop</div>
+          <small class="text-muted-small">Oct 29, 2025 · Eating Out</small>
+        </div>
+        <div class="fw-bold">$6.25</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- JS -->
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+  const searchInput = document.getElementById('searchTransactions');
+  const filterButtons = document.querySelectorAll('.cs-filter-pill');
+  const transactionItems = document.querySelectorAll('.transaction-item');
+
+  function applyFilters() {
+    const term = searchInput.value.toLowerCase();
+    const activeBtn = document.querySelector('.cs-filter-pill.active');
+    const activeFilter = activeBtn ? activeBtn.dataset.filter : 'all';
+
+    transactionItems.forEach(item => {
+      const name = item.dataset.name.toLowerCase();
+      const categoryKey = item.dataset.category; // e.g. "food", "eating-out"
+
+      const matchesText = name.includes(term);
+      const matchesCategory = activeFilter === 'all' || categoryKey === activeFilter;
+
+      item.style.display = (matchesText && matchesCategory) ? 'flex' : 'none';
+    });
+  }
+
+  // text search
+  searchInput.addEventListener('input', applyFilters);
+
+  // category clicks
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Insights &amp; Forecast - CashStash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <!-- CashStash Design System -->
+  <style>
+    :root {
+      --cs-green: #74C2A8;
+      --cs-green-soft: rgba(116, 194, 168, 0.1);
+      --cs-bg: #F5F7F6;
+      --cs-text-main: #1F2933;
+      --cs-text-muted: #6C757D;
+      --cs-radius-lg: 16px;
+      --cs-shadow-main: 0 4px 16px rgba(15, 35, 52, 0.08);
+    }
+
+    body {
+      background-color: var(--cs-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 16px;
+      color: var(--cs-text-main);
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .text-muted-small {
+      color: var(--cs-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .cs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cs-text-muted);
+    }
+
+    /* NAVBAR */
+    .navbar-cs {
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(15, 35, 52, 0.06);
+    }
+
+    .navbar-cs .nav-link {
+      font-size: 0.9rem;
+      color: var(--cs-text-muted);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.4rem;
+    }
+
+    .navbar-cs .nav-link.active {
+      color: var(--cs-green);
+      font-weight: 600;
+      border-bottom-color: var(--cs-green);
+    }
+
+    /* LAYOUT & CARDS */
+    .cs-shell {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .cs-card {
+      border-radius: var(--cs-radius-lg);
+      border: 1px solid rgba(15, 35, 52, 0.03);
+      box-shadow: var(--cs-shadow-main);
+      background-color: #ffffff;
+    }
+
+    .cs-card-body {
+      padding: 24px;
+    }
+
+    .cs-icon-pill {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--cs-green-soft);
+      color: var(--cs-green);
+      font-size: 16px;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-cs">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="dashboard.html">CashStash</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbars">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="transactions.html">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+        <li class="nav-item"><a class="nav-link" href="goals.html">Goals</a></li>
+        <li class="nav-item"><a class="nav-link active" href="insights.html">Insights</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="container cs-shell">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 class="page-title mb-1">Insights &amp; Forecast</h1>
+    <p class="text-muted-small mb-0">Understand patterns and plan ahead.</p>
+  </div>
+
+  <!-- Top charts -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-7">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="mb-0">Monthly Spending Trend</h5>
+            <span class="cs-label">Last 6 months</span>
+          </div>
+          <div class="my-3">
+            <canvas id="monthlyTrendChart" height="170"></canvas>
+          </div>
+          <small class="text-muted-small">
+            Your spending has been relatively stable over the past 6 months, with an average of <strong>$1,249/month</strong>.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="mb-0">Spending by Category</h5>
+            <span class="cs-label">This month</span>
+          </div>
+          <div class="my-3">
+            <canvas id="categoryChart" height="170"></canvas>
+          </div>
+          <small class="text-muted-small">
+            Compare how much you spend in each category to see where you might want to cut back.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insight tiles -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card cs-card h-100">
+        <div class="cs-card-body">
+          <div class="d-flex align-items-center mb-2">
+            <div class="cs-icon-pill me-2">🗓️</div>
+            <h6 class="mb-0">Weekend Spending</h6>
+          </div>
+          <small class="text-muted-small d-block mb-1">
+            Your weekend spending averages <strong>$78</strong> per day, compared to <strong>$55</strong> on weekdays.
+          </small>
+          <small class="text-success d-block">$43 more per weekend day</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card cs-card h-100">
+        <div class="cs-card-body">
+          <div class="d-flex align-items-center mb-2">
+            <div class="cs-icon-pill me-2">🔥</div>
+            <h6 class="mb-0">Peak Spending Day</h6>
+          </div>
+          <small class="text-muted-small">
+            You spend the most on <strong>Fridays</strong>, averaging <strong>$92</strong> per Friday. This often includes dining out and entertainment.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card cs-card h-100">
+        <div class="cs-card-body">
+          <div class="d-flex align-items-center mb-2">
+            <div class="cs-icon-pill me-2">✅</div>
+            <h6 class="mb-0">Best Saving Month</h6>
+          </div>
+          <small class="text-muted-small">
+            Your lowest spending was in <strong>August</strong> at <strong>$1,115</strong>. Think about what changed that month (fewer outings, cooking at home, etc.) and try repeating those habits.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cash flow + What-if -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-7">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="mb-0">Cash Flow Projection</h5>
+            <span class="cs-label">Next 3 months</span>
+          </div>
+          <div class="my-3">
+            <canvas id="cashFlowChart" height="170"></canvas>
+          </div>
+          <small class="text-muted-small">
+            Projection is based on your current income and spending patterns. Adjusting categories like “Eating Out” updates this forecast.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card cs-card">
+        <div class="cs-card-body">
+          <h5 class="mb-2">What-if Simulator</h5>
+          <p class="mb-1">
+            <small class="text-muted-small">Adjust “Eating Out” Budget:</small>
+          </p>
+          <p class="mb-2">
+            <strong id="eatingOutValue">$120</strong>
+          </p>
+          <input
+            type="range"
+            class="form-range mb-3"
+            id="eatingOutSlider"
+            min="0"
+            max="200"
+            value="120"
+          >
+
+          <p class="mb-1"><small class="text-muted-small">Impact on Monthly Budget</small></p>
+          <h4 id="impactAmountText" class="mb-1 text-muted-small">- $0.00</h4>
+          <small id="impactDescription" class="text-muted-small d-block mb-3">
+            Moving above $120 means more spending; below $120 means saving more.
+          </small>
+
+          <p class="mb-1"><small class="text-muted-small">Projected End-of-Month Balance</small></p>
+          <h5 id="projectedBalanceText" class="mb-1 text-success">$275.25</h5>
+          <small id="daysFasterText" class="text-muted-small">
+            If the extra money goes to savings, it could change how quickly you reach your goals.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Bills -->
+  <div class="card cs-card">
+    <div class="cs-card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="card-title mb-0">Upcoming Bills &amp; Due Dates</h5>
+        <span class="cs-label">Next 30 days</span>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="border rounded p-3 bg-white h-100">
+            <strong>Phone Bill</strong><br>
+            <small class="text-muted-small">Nov 15 · $45.00</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="border rounded p-3 bg-white h-100">
+            <strong>Internet</strong><br>
+            <small class="text-muted-small">Nov 20 · $35.00</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="border rounded p-3 bg-white h-100">
+            <strong>Rent</strong><br>
+            <small class="text-muted-small">Dec 1 · $650.00</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- JS: Bootstrap -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- JS: Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // ---- Monthly Spending Trend Chart ----
+    const monthlyTrendCtx = document.getElementById('monthlyTrendChart').getContext('2d');
+    const monthlyTrendChart = new Chart(monthlyTrendCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
+        datasets: [{
+          label: 'Monthly Spending',
+          data: [1240, 1320, 1115, 1280, 1255, 1300],
+          fill: false,
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 3
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: false, ticks: { callback: value => '$' + value } }
+        }
+      }
+    });
+
+    // ---- Spending by Category Chart ----
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    const categoryChart = new Chart(categoryCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Housing', 'Food & Groceries', 'Eating Out', 'Transport', 'Fun', 'Other'],
+        datasets: [{
+          label: 'This Month',
+          data: [680, 250, 120, 90, 80, 29],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: value => '$' + value } }
+        }
+      }
+    });
+
+    // ---- Cash Flow Projection Chart ----
+    const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
+
+    // Base balances for next 3 months at baseline eating-out = 120
+    const baseBalances = [275.25, 285.25, 295.25];
+
+    const cashFlowChart = new Chart(cashFlowCtx, {
+      type: 'line',
+      data: {
+        labels: ['This Month', 'Next Month', 'In 2 Months'],
+        datasets: [{
+          label: 'Projected End-of-Month Balance',
+          data: baseBalances.slice(),
+          borderWidth: 2,
+          tension: 0.3,
+          fill: false,
+          pointRadius: 3
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: false, ticks: { callback: value => '$' + value.toFixed(0) } }
+        }
+      }
+    });
+
+    // ---- What-if Simulator Logic ----
+    const slider = document.getElementById('eatingOutSlider');
+    const eatingOutValue = document.getElementById('eatingOutValue');
+    const impactAmountText = document.getElementById('impactAmountText');
+    const impactDescription = document.getElementById('impactDescription');
+    const projectedBalanceText = document.getElementById('projectedBalanceText');
+    const daysFasterText = document.getElementById('daysFasterText');
+
+    // Baseline
+    const baseEatingOut = 120;      // dollars
+    const baseBalance = 275.25;     // dollars
+    const dollarsPerDay = 5;        // every $5 change ~ 1 day faster/slower (for display only)
+
+    function formatMoney(value) {
+      const sign = value < 0 ? '- ' : value > 0 ? '+ ' : '';
+      return sign + '$' + Math.abs(value).toFixed(2);
+    }
+
+    function updateWhatIf() {
+      const current = parseInt(slider.value, 10);
+
+      // label above slider
+      eatingOutValue.textContent = '$' + current;
+
+      // How much different from baseline
+      const diff = current - baseEatingOut; // positive diff = more spending
+
+      // Impact on monthly budget: negative if you spend more than baseline
+      const impact = diff * -1; // $1 extra eating out = -$1 monthly remaining
+      impactAmountText.textContent = formatMoney(impact);
+
+      // Color logic
+      impactAmountText.classList.remove('text-success', 'text-danger', 'text-muted-small');
+      if (impact > 0) {
+        impactAmountText.classList.add('text-success');
+      } else if (impact < 0) {
+        impactAmountText.classList.add('text-danger');
+      } else {
+        impactAmountText.classList.add('text-muted-small');
+      }
+
+      // Description text
+      if (diff > 0) {
+        impactDescription.textContent = 'You’re increasing your “Eating Out” budget. That leaves less room for savings.';
+      } else if (diff < 0) {
+        impactDescription.textContent = 'You’re cutting back on “Eating Out,” which frees up more money for savings or goals.';
+      } else {
+        impactDescription.textContent = 'You’re keeping your “Eating Out” budget the same as your current baseline.';
+      }
+
+      // New projected end-of-month balance
+      const newBalance = baseBalance + impact; // impact already includes sign
+      projectedBalanceText.textContent = '$' + newBalance.toFixed(2);
+
+      projectedBalanceText.classList.remove('text-success', 'text-danger');
+      projectedBalanceText.classList.add(newBalance >= baseBalance ? 'text-success' : 'text-danger');
+
+      // "Days faster" estimation
+      const savedExtra = Math.max(0, -impact); // extra money going to goals if you LOWER eating out
+      const days = Math.round(savedExtra / dollarsPerDay);
+      if (days > 0) {
+        daysFasterText.textContent =
+          `If you redirect the extra $${savedExtra.toFixed(2)}/month to a goal, you could reach it about ${days} days faster.`;
+      } else if (impact < 0) {
+        // spending more → slower
+        const slowerDays = Math.round((impact * -1) / dollarsPerDay);
+        daysFasterText.textContent =
+          `Spending more here may slow down your goals by about ${slowerDays} days.`;
+      } else {
+        daysFasterText.textContent =
+          'Sticking to this budget keeps your current goal timelines about the same.';
+      }
+
+      // Update cash flow projection chart (shift whole line up/down by impact)
+      const adjustedBalances = baseBalances.map(b => b + impact);
+      cashFlowChart.data.datasets[0].data = adjustedBalances;
+      cashFlowChart.update();
+    }
+
+    if (slider) {
+      slider.addEventListener('input', updateWhatIf);
+      // initialize once
+      updateWhatIf();
+    }
+  });
+</script>
+
+</body>
+</html>
